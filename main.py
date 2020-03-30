@@ -1,12 +1,14 @@
 import numpy as np
 import random as rnd
+import matplotlib.pyplot as plt
 
 
 class k_means:
     def __init__(self, _data, _num_groups):
-        self.data = _data
+        self.data = np.array(_data)
         centroids = np.zeros((_num_groups,) + (np.array(_data[0]).shape), dtype=float)
         self.centroids = centroids
+        self.Randomize_Centroids()
 
     def Randomize_Centroids(self):
         s = np.random.default_rng().normal(0, np.std(self.data), 1000)
@@ -19,7 +21,7 @@ class k_means:
         for center in centroids:
             distances = np.append(distances, np.linalg.norm(center - data_point))
 
-        #print(distances)
+
         return np.argmin(distances)
 
     def Calculate_New_Centroids(centroids, data_points):
@@ -39,16 +41,27 @@ class k_means:
             new_centroids[i] = new
 
         return new_centroids
+
+    def Perform_Steps(self, num_steps):
+        for i in range(num_steps):
+            self.centroids = k_means.Calculate_New_Centroids(self.centroids, self.data)
+
+    def Display(self):
+        data = self.data.T.tolist()
+        centroids = self.centroids.T.tolist()
+        plt.scatter(x=data[0], y=data[1], c="red")
+        plt.scatter(x=centroids[0], y=centroids[1], c="blue")
+        plt.show()
+
         
 
 
-        
 
 k_means_set = k_means([[1,2],[-5,2],[-6,-2],[8,-6]], 2)
 k_means_set.Randomize_Centroids()
 
-print(k_means_set.centroids)
-print(k_means.Calculate_New_Centroids(k_means_set.centroids, k_means_set.data))
+k_means_set.Perform_Steps(5)
 
-#print(k_means.Calculate_Closest(np.array([[1,2],[5,2],[6,2],[8,6]]), np.array([6,2])))
+k_means_set.Display()
+
     
