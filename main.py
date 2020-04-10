@@ -8,7 +8,6 @@ class k_means:
         self.data = np.array(_data)
         centroids = np.zeros((_num_groups,) + (np.array(_data[0]).shape), dtype=float)
         self.centroids = centroids
-        self.Randomize_Centroids()
 
     def Randomize_Centroids(self):
         s = np.random.default_rng().normal(0, np.std(self.data), 1000)
@@ -54,11 +53,13 @@ class k_means:
         plt.show()
 
         
+data = np.random.normal(5, 2, size=(100, 2)), np.random.normal(-5, 4, size=(100, 2))
 
-
-
-k_means_set = k_means([[1,2],[-5,2],[-6,-2],[8,-6]], 2)
+k_means_set = k_means(np.concatenate(data, axis=0), 2)
+print(k_means_set.data)
 k_means_set.Randomize_Centroids()
+k_means_set.Display()
+
 
 k_means_set.Perform_Steps(5)
 
